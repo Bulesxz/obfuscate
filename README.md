@@ -109,7 +109,13 @@ graph TD
    - 多重混淆算法处理
    - span标签 + 不可见字符 + 随机属性
 
-6. **结果应用**
+6. **第三方服务保护** 🔒 **新增**
+   - 自动识别Google Analytics代码
+   - 保护Facebook Pixel等分析工具
+   - 跳过广告跟踪代码混淆
+   - 确保统计功能正常工作
+
+7. **结果应用**
    - 清空目标目录
    - 复制混淆结果
    - 生成映射文件
@@ -225,6 +231,30 @@ graph TD
 - 配置文件（`tsconfig.json`, `webpack.config.js` 等）
 - 隐藏文件（`.gitignore`, `.env` 等）
 
+### 🔒 第三方服务保护
+混淆器会自动识别并保护以下第三方服务代码：
+
+#### Google Analytics & Tag Manager
+- ✅ `gtag()` 函数
+- ✅ `ga()` 函数（Universal Analytics）
+- ✅ `dataLayer` 变量
+- ✅ Google Analytics配置ID（GA_MEASUREMENT_ID）
+- ✅ 转换跟踪代码（goog_report_conversion）
+
+#### 其他分析工具
+- ✅ Facebook Pixel（`fbq()`）
+- ✅ Mixpanel（`mixpanel.`）
+- ✅ Amplitude（`amplitude.`）
+- ✅ 百度统计（`_hmt`）
+- ✅ Yandex Metrica（`yaCounter`）
+- ✅ Matomo/Piwik（`_paq`）
+
+#### 保护机制
+- **智能检测**: 自动识别分析脚本内容和外部链接
+- **完整保护**: 既保护全局变量也保护函数调用
+- **零破坏**: 保证统计代码100%可用
+- **兼容性**: 支持所有主流分析工具
+
 ## 性能优化
 
 ### 文件处理优化
@@ -263,6 +293,13 @@ graph TD
 生成的映射文件可用于调试和问题排查，包含完整的转换记录。
 
 ## 版本历史
+
+### v2.1.4 - 第三方服务保护 🔒
+- 🆕 **Google Analytics保护**: 自动识别并保护gtag、ga、dataLayer等关键函数
+- 🔒 **多平台分析支持**: 支持Facebook Pixel、Mixpanel、百度统计等主流分析工具
+- 🎯 **智能检测**: 自动识别分析脚本内容和外部链接，精准保护
+- ✅ **零破坏保证**: 确保所有统计和分析代码100%可用
+- 🛡️ **全面兼容**: 支持所有主流第三方分析和广告跟踪工具
 
 ### v2.1.3 - 二进制文件保护增强 🛡️
 - 🔧 **重要修复**: 完全解决了JPG/PNG等图片文件在混淆过程中损坏的问题
