@@ -1,0 +1,67 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 包管理器锁定文件（保留一个即可）
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# 环境变量
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 日志文件
+logs/
+*.log
+
+# 临时文件
+tmp/
+temp/
+.tmp/
+
+# 操作系统生成的文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# 编辑器和IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 混淆工具相关
+*_original_backup/
+*_obfuscation_work/
+obfuscation-mapping.json
+*.mapping.json
+
+# 测试相关
+test-*/
+coverage/
+.nyc_output/
+
+# 构建输出
+dist/
+build/
+out/
+
+# 缓存
+.cache/
+.parcel-cache/
+
+# 其他
+*.tgz
+*.tar.gz 
