@@ -1,4 +1,3 @@
-ok
 # 前端代码混淆工具
 
 一个强大的前端代码混淆工具，支持 JavaScript、TypeScript、HTML、CSS 的全方位混淆。
@@ -62,10 +61,17 @@ pnpm install
 ### 运行混淆
 ```bash
 # 基础用法
-node ./bin/obfuscate.js ./demo
+node ./bin/obfuscate.js ./demo -o . -n 3
+
+-o: 输出目录 . 表示直接输出到目标目录的父级
+-n: 混淆份数 最大限制10个
+注：以上两个参数互不影响
 
 # 或者使用 npm script
 npm start ./demo
+
+# 或者运行pnpm build，打包生成dist
+node ./dist/index.js ./demo
 ```
 
 ## 混淆流程

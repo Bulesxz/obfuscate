@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.28.0",
+    "@babel/generator": "^7.28.0",
     "@babel/parser": "^7.28.0",
     "@babel/plugin-transform-typescript": "^7.28.0",
     "@babel/preset-typescript": "^7.27.1",
@@ -15,19 +16,25 @@
     "@babel/types": "^7.28.0",
     "buffer": "^6.0.3",
     "cheerio": "^1.1.0",
+    "commander": "^14.0.0",
     "crypto": "^1.0.1",
     "css": "^3.0.0",
     "cssnano": "^7.0.7",
     "fs-extra": "^11.3.0",
     "javascript-obfuscator": "^4.1.1",
-    "jsdom": "^26.1.0",
     "node-html-parser": "^7.0.1",
     "postcss": "^8.5.6",
     "postcss-value-parser": "^4.2.0",
-    "shuffle-array": "^1.0.1",
-    "shorthash": "^0.0.2"
+    "shorthash": "^0.0.2",
+    "shuffle-array": "^1.0.1"
   },
   "scripts": {
-    "start": "node bin/obfuscate.js"
+    "start": "node ./bin/obfuscate.js",
+    "build": "ncc build bin/obfuscate.js -o dist --minify",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.38.0",
+    "husky": "^9.1.7"
   }
 }

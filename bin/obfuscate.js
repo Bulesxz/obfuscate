@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const fs = require('fs-extra');
 const path = require('path');
 const ObfuscationEngine = require('../lib/obfuscation-engine');
 
@@ -16,9 +17,22 @@ function parseArgs() {
         process.exit(1);
     }
 
-    for (let i = 0; i < args.length; i++) {
+    // 解析为绝对路径
+    const targetDir = path.resolve(args[0]);
+    if (!fs.existsSync(targetDir)) {
+        console.error('Error: Target directory is required');
+        showUsage();
+        process.exit(1);
+    }
+
+    // 初始化输出目录和输出数量
+    let outputDir = '.';
+    let outCount = 1;
+
+    for (let i = 1; i < args.length; i++) {
         const arg = args[i];
-        
+        const argNext = args[i + 1];
+
         if (arg === '--help' || arg === '-h') {
             showUsage();
             process.exit(0);
@@ -27,55 +41,62 @@ function parseArgs() {
                 console.error('Error: --keyword-rate requires a value');
                 process.exit(1);
             }
-            const rate = parseFloat(args[++i]);
+            const rate = parseFloat(argNext);
             if (isNaN(rate) || rate < 0 || rate > 1) {
                 console.error('Error: --keyword-rate must be a number between 0 and 1');
                 process.exit(1);
             }
             options.keywordObfuscationRate = rate;
+            i++; // 跳过下一个参数
         } else if (arg === '--no-keyword') {
             options.enableKeywordObfuscation = false;
         } else if (arg.startsWith('--')) {
             console.error(`Error: Unknown option ${arg}`);
             process.exit(1);
-        } else {
-            if (options.targetDir) {
-                console.error('Error: Multiple target directories specified');
-                process.exit(1);
+        } else if (argNext) {
+            if (arg === '-o') {
+                outputDir = argNext;
+                i++; // 跳过下一个参数
+            } else if (arg === '-n') {
+                outCount = +argNext;
+                if (isNaN(outCount) || outCount < 1 || outCount > 10) {
+                    console.error('Error: --output-count must be a number between 1 and 10');
+                    process.exit(1);
+                }
+                i++; // 跳过下一个参数
             }
-            options.targetDir = path.resolve(arg);
         }
     }
 
-    if (!options.targetDir) {
-        console.error('Error: Target directory is required');
-        showUsage();
-        process.exit(1);
-    }
+    options.targetDir = targetDir;
+    options.outputDir = outputDir;
+    options.outCount = outCount;
 
     return options;
 }
 
 function showUsage() {
     console.log(`
-Usage: obfuscate [options] <target-directory>
+Usage: obfuscate <target-directory> [options]
 
 Options:
   -h, --help                 显示帮助信息
   -k, --keyword-rate <rate>  关键词混淆概率 (0.0-1.0，默认: 0.4)
                              0.4 表示40%概率混淆关键词本身，60%保持不变
   --no-keyword               禁用关键词混淆功能
+  -o <output-directory>      指定输出目录 (默认: 目标目录上级目录)
+  -n <output-count>          指定输出数量 (默认: 1， 最大: 10)
 
 Examples:
   obfuscate ./website                    # 使用默认设置混淆网站
-  obfuscate -k 0.6 ./website           # 60%概率混淆关键词本身
-  obfuscate -k 0.2 ./website           # 20%概率混淆关键词本身
-  obfuscate --no-keyword ./website      # 禁用关键词混淆
+  obfuscate ./website -k 0.6           # 60%概率混淆关键词本身
+  obfuscate ./website -k 0.2           # 20%概率混淆关键词本身
+  obfuscate ./website --no-keyword     # 禁用关键词混淆
 `);
 }
 
 const options = parseArgs();
-const engine = new ObfuscationEngine(options.targetDir, options);
+const engine = new ObfuscationEngine(options);
 
 engine.run().catch(err => {
     console.error('Obfuscation failed:', err);
