@@ -1,3 +1,4 @@
+ok
 # 前端代码混淆工具
 
 一个强大的前端代码混淆工具，支持 JavaScript、TypeScript、HTML、CSS 的全方位混淆。
