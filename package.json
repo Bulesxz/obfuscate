@@ -1,7 +1,7 @@
 {
   "name": "advanced-obfuscator",
-  "version": "2.1.4",
-  "description": "Advanced JavaScript/TypeScript/HTML/CSS obfuscator with keyword protection, file structure randomization, and third-party service protection",
+  "version": "2.2.0",
+  "description": "Advanced JavaScript/TypeScript/HTML/CSS obfuscator with keyword protection, sentence obfuscation, file structure randomization, and third-party service protection",
   "main": "lib/obfuscation-engine.js",
   "bin": {
     "obfuscate": "bin/obfuscate.js"
