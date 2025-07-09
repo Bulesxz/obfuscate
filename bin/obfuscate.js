@@ -9,9 +9,9 @@ function parseArgs() {
     const options = {
         targetDir: null,
         keywordObfuscationRate: 0.4, // 默认40%概率混淆关键词本身（60%不混淆）
-        enableKeywordObfuscation: true,
+        enableKeywordObfuscation: false,
         sentenceObfuscationRate: 0.6, // 默认60%概率混淆句子
-        enableSentenceObfuscation: true
+        enableSentenceObfuscation: false
     };
 
     if (args.length === 0) {
@@ -49,6 +49,7 @@ function parseArgs() {
                 process.exit(1);
             }
             options.keywordObfuscationRate = rate;
+            options.enableKeywordObfuscation = true; // 使用 -k 参数时自动启用关键词混淆
             i++; // 跳过下一个参数
         } else if (arg === '--sentence-rate' || arg === '-s') {
             if (i + 1 >= args.length) {
@@ -61,6 +62,7 @@ function parseArgs() {
                 process.exit(1);
             }
             options.sentenceObfuscationRate = rate;
+            options.enableSentenceObfuscation = true; // 使用 -s 参数时自动启用句子混淆
             i++; // 跳过下一个参数
         } else if (arg === '--no-keyword') {
             options.enableKeywordObfuscation = false;
@@ -97,22 +99,28 @@ Usage: obfuscate <target-directory> [options]
 
 Options:
   -h, --help                 显示帮助信息
-  -k, --keyword-rate <rate>  关键词混淆概率 (0.0-1.0，默认: 0.4)
+  -k, --keyword-rate <rate>  启用关键词混淆并设置混淆概率 (0.0-1.0)
                              0.4 表示40%概率混淆关键词本身，60%保持不变
-  -s, --sentence-rate <rate> 句子混淆概率 (0.0-1.0，默认: 0.6)
+  -s, --sentence-rate <rate> 启用句子混淆并设置混淆概率 (0.0-1.0)
                              0.6 表示60%概率对句子进行span和不可见字符混淆
-  --no-keyword               禁用关键词混淆功能
-  --no-sentence              禁用句子混淆功能
+  --no-keyword               明确禁用关键词混淆功能
+  --no-sentence              明确禁用句子混淆功能
   -o <output-directory>      指定输出目录 (默认: 目标目录上级目录)
   -n <output-count>          指定输出数量 (默认: 1， 最大: 10)
 
+混淆功能控制:
+  • 默认情况下，关键词和句子混淆都是关闭的
+  • 使用 -k 参数会自动启用关键词混淆
+  • 使用 -s 参数会自动启用句子混淆
+  • 使用 --no-keyword 或 --no-sentence 明确禁用相应功能
+
 Examples:
-  obfuscate ./website                    # 使用默认设置混淆网站
-  obfuscate ./website -k 0.6           # 60%概率混淆关键词本身
-  obfuscate ./website -s 0.8           # 80%概率混淆句子
-  obfuscate ./website -k 0.2 -s 0.4    # 20%概率混淆关键词，40%概率混淆句子
-  obfuscate ./website --no-keyword     # 只使用句子混淆，禁用关键词混淆
-  obfuscate ./website --no-sentence    # 只使用关键词混淆，禁用句子混淆
+  obfuscate ./website                    # 只进行代码混淆，不处理关键词和句子
+  obfuscate ./website -k 0.6             # 启用关键词混淆，60%概率处理
+  obfuscate ./website -s 0.8             # 启用句子混淆，80%概率处理
+  obfuscate ./website -k 0.2 -s 0.4      # 同时启用两种混淆
+  obfuscate ./website -k 0.5 --no-sentence  # 只使用关键词混淆
+  obfuscate ./website -s 0.7 --no-keyword   # 只使用句子混淆
 `);
 }
 
