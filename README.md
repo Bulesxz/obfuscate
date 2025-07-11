@@ -1,5 +1,9 @@
 # 前端代码混淆工具
 
+
+node bin/obfuscate.js "/Users/leo/Downloads/www.pwzrm1.top_3Zmst.tarx" -o "/Users/leo/Downloads/3-7.10-www.pwzrm1.top_3Zmst.tarx-nokeyword" -n 15 --no-css
+
+
 一个强大的前端代码混淆工具，支持 JavaScript、TypeScript、HTML、CSS 的全方位混淆。
 
 ## 功能特性
